@@ -30,6 +30,7 @@
   (if (> from to)
       '()
       (cons from (range (+ from 1) to))))
+  ;(accumulate cons '() from to (lambda (x) x) (lambda (x) (+ x 1))
 
 ; Зад.4. Списък от цифрите на число
 (define (digit-list n)
