@@ -7,7 +7,8 @@
 ; Зад.1 (Вар.А) - две решения
 ; "броене" с accumulate - функцията term връща само единици и нули, после сумираме
 (define (meetTwice? f g a b)
-  (>= (accumulate + 0 (lambda (i) (if (= (f i) (g i)) 1 0))
+  (>= (accumulate + 0
+                  (lambda (i) (if (= (f i) (g i)) 1 0))
                   (lambda (x) (+ x 1))
                   a b)
       2))
