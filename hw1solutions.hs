@@ -4,7 +4,7 @@ import Data.Ord (comparing)
 -- Зад.1
 hailstone :: Int -> [Int]
 hailstone 1 = [1]
-hailstone n = n : hailstone (if even n then div n 2 else 3*n + 1)
+hailstone n = n : hailstone (if even n then n `div` 2 else 3*n + 1)
 
 -- Зад.2
 prime :: Int -> Bool
@@ -22,7 +22,7 @@ result = length [ n | n<-[10..99], odd n, not $ prime n, isNotRepr n]
 
 -- Зад.3
 divisors :: Int -> [(Int,Int)]
-divisors n = combinePairs $ allDivs n
+divisors = combinePairs . allDivs
 
 -- функция, която връща гол списък от всички делители: allDivs 120 -> [2,2,2,3,5]
 allDivs 1 = []
