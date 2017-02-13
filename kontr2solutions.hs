@@ -17,7 +17,7 @@ sumDists p pts = sum $ map (dist p) pts
 -- след като можем на всяка точка да съпоставяме тази сума, оттук нататък задачата
 -- се свежда до търсенето на минимум/максимум по специален начин в списък - начини много
 findMedoid :: [Point] -> Point
-findMedoid pts = minimumBy (\p1 p2 -> compare (sumDists p1 pts) (sumDists p2 pts)) pts
+findMedoid pts = minimumBy (comparing (\p -> sumDists p pts)) pts
 
 -- (грозна) алтернатива - просто линейно обхождане
 -- (на всяка стъпка трябва да помним и пълния списък с точки)
@@ -29,14 +29,14 @@ findMedoid pts = minimumBy (\p1 p2 -> compare (sumDists p1 pts) (sumDists p2 pts
 
 -- аналогични решения и за другия вариант
 findPoint :: [Point] -> Point
-findPoint pts = maximumBy (\p1 p2 -> compare (sumDists p1 pts) (sumDists p2 pts)) pts
+findPoint pts = maximumBy (comparing (\p -> sumDists p pts)) pts
 
 -- Зад.2 - Вариант А
 -- за всеки k,n изчисляваме i-тата позиция в потока чрез предишните няколко
 -- бавно, неефективно, малко неинтуитивно, но при внимателно индексиране - работещо
 sumLast :: Integer -> Integer -> [Integer]
 sumLast k n = map (\i -> fn k n i) [1..]
-  where fn k _ 1 = k -- първото число е 2, независимо от колко "назад" търсим
+  where fn k _ 1 = k -- първото число е k, независимо от колко "назад" търсим
         fn k n i = sum [ fn k n j | j<-[(max 1 i-n)..(i-1)] ] -- за да избегнем отрицателни индекси
 
 -- идея - първо изчисляваме първите n елемента на потока,
@@ -49,7 +49,7 @@ sumLast2 k n = prefix ++ (helper prefix)
                         in currSum : helper ((tail window) ++ [currSum])
         -- с малко съображение виждаме, че първите n числа са последователни
         -- степени на двойката, умножени по k.
-        prefix = map (k*) $ 1 : map (2^) [0..n-2]
+        prefix = k : map ((k*).(2^)) [0..n-2]
 
 -- мисля, че вариант Б е очевидно аналогичен - заместете sum с product навсякъде
 
