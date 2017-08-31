@@ -1,11 +1,6 @@
 ; Зад.1 - Да се обърнат цифрите на дадено число -
-; рекурсивен и итеративен вариант
+; итеративен вариант
 (define (reverse-int n)
-  (if (< n 10)
-      n
-      (+ (* 10 (quotient n 10)) (remainder n 10))))
-
-(define (reverse-int-iter n)
   (define (helper n res)
     (if (= n 0)
         res
