@@ -124,38 +124,4 @@
                 (helper (right-tree t) (root-tree t) to)]))
   (helper t -inf.0 +inf.0))
 
-; Зад.9.
-(define (parse-expression expr)
-  (cond [(null? expr) #f] ; никога няма да стигнем дотук, освен ако не подадем празен/грешен израз
-        [(number? expr) (make-leaf expr)]
-        [else (make-tree (car expr)
-                         (parse-expression (cadr expr))
-                         (parse-expression (caddr expr)))]))
-
-(define (tree-eval t)
-  (cond [(empty-tree? t) #f] ; отново никога не би трябвало да стигнем тук при валиден вход
-        [(number? (root-tree t)) (root-tree t)]
-        [(equal? (root-tree t) '+) (+ (tree-eval (left-tree t))
-                                      (tree-eval (right-tree t)))]
-        [(equal? (root-tree t) '-) (- (tree-eval (left-tree t))
-                                      (tree-eval (right-tree t)))]
-        [(equal? (root-tree t) '*) (* (tree-eval (left-tree t))
-                                      (tree-eval (right-tree t)))]
-        [(equal? (root-tree t) '/) (/ (tree-eval (left-tree t))
-                                      (tree-eval (right-tree t)))]
-        [else #f])) ; няма други случаи
-
-; (eval '+) -> #<procedure:+> - самата функция +!
-; ((eval '+) 2 3) -> (+ 2 3) -> 5 - eval оценява quote-натия операнд
-(define (tree-eval* t)
-  (cond [(empty-tree? t) #f]
-        [(number? (root-tree t)) (root-tree t)]
-        [else ((eval (root-tree t)) (tree-eval* (left-tree t))
-                                    (tree-eval* (right-tree t)))]))
-        ;[else (apply (eval (root-tree t)) (map tree-eval* (cdr t)))])) lol
-
-; Цялостно оценяване на израз, минавайки през конструиране на дърво
-(define (eval-expr expr) (tree-eval (parse-expression expr)))
-(define eval-expr* eval) ; lol
-
         
